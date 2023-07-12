@@ -93,20 +93,20 @@ include::./common_docinfo_vars.adoc[]
 
 The Linux footprint of enterprise IT landscapes continues to grow.
 This growth can be particularly problematic for a managed services provider (MSP), who may need to manage systems lifecycles for many clients.
-As an MSP, you need a management tool that can scale with your business needs.
+As an MSP, you need a systems management tool that can scale with your business needs.
 
 {product1_full} {product1_version} is an enterprise, open source management solution for software-defined infrastructure.
 It is designed to help enterprises reduce complexity and regain control of IT assets with a single tool.
 {product1} provides you with systems asset management, systems provisioning, and automated software management to help you keep all your systems up-to-date and secure.
 
-{product1} easily scales to satisfy your technical and business requirements without compromising on operational performance.
+{product1} easily scales to satisfy your technical and business requirements without compromising operational performance.
 It gives you the features and automation in a single tool to seamlessly manage a broad spectrum of Linux systems on a variety of hardware architectures and hypervisors as well as container, IoT, and cloud platforms.
 With {product1}, you can manage systems lifecycle management, streamline operations, and manage your growing IT landscape.
 
 
 === Scope
 
-You learn how to deploy {product1} to support systems lifecycle management for multiple, downstream customers.
+Learn how to deploy {product1} to support systems lifecycle management for multiple, downstream customers.
 The hub and peripheral architecture described here enables managed services providers and large enterprises to consolidate certain management operations while maintaining the advantages of separate peripheral servers for each customer.
 
 
@@ -145,7 +145,7 @@ This would address isolation, but it is somewhat inefficient because of the need
 * Hub and peripherals
 * Inter-Server Synchronization
 
-Each of these is discussed further below.
+Each of these is discussed further in this guide.
 
 
 === Organizations
@@ -201,13 +201,13 @@ Review https://{product1_docs}/installation-and-upgrade/hardware-requirements.ht
 For this guide, you need at least two systems.
 These can be bare metal or virtual machines.
 One will act as a hub server and the other will act as a peripheral server.
-If you would like to explore registering a client to a peripheral server, add one more more systems to use as clients.
+If you would like to explore registering a client to a peripheral server, add one or more systems to your environment to use as clients.
 
 As the hub and peripheral servers will have very few clients, they do not need to follow normal sizing recommendations.
 However, import and export operations involve a lot of SQL transactions and, potentially, significant storage for the database (located in `/var/lib/pgsql`).
 The recommended configuration for both hub and peripheral servers is:
 
-* CPU: 8 CPU cores
+* CPU: 8 cores
 * RAM: 64 GB
 * Storage: 100 GB
  
@@ -226,7 +226,7 @@ Once you have access to your target systems, you can proceed to install {product
 
 At the center of the architecture is the {product1} hub server.
 This server follows standard installation and setup processes.
-However, for the hub server, you must enable the Hub XMLRPC API service service.
+However, for the hub server, you must enable the Hub XMLRPC API service.
 
 
 . Install {product1} on the designated hub system.
@@ -249,14 +249,14 @@ Commands shown here should be issued as the root user on the server.
 .. On the hub server, install the `hub-xmlrpc-api` package.
 //
 +
-The package is available in the {product1} repositories, so can be installed with a simple command.
+The package is available in the {product1} repositories, so it can be installed with a simple command.
 +
 [source, console]
 ----
 zypper install hub-xmlrpc-api
 ----
 
-.. Set the Hub XMLRPC API service to start automatically at boot time, and start it immediately:
+.. Set the Hub XMLRPC API service to start automatically at boot time and start it immediately:
 +
 [source, console]
 ----
@@ -273,17 +273,17 @@ systemctl start hub-xmlrpc-api.service
 +
 Use the default value.
 
-* HUB_CONNECT_TIMEOUT: the maximum number of seconds to wait for a response when connecting to a Server.
+* HUB_CONNECT_TIMEOUT: the maximum number of seconds to wait for a response when connecting to a peripheral server.
 //
 +
 Use the default value in most cases.
 
-* HUB_REQUEST_TIMEOUT: the maximum number of seconds to wait for a response when calling a Server method.
+* HUB_REQUEST_TIMEOUT: the maximum number of seconds to wait for a response when calling a server method.
 //
 +
 Use the default value in most cases.
 
-* HUB_CONNECT_USING_SSL: use HTTPS instead of HTTP for communicating with peripheral Servers.
+* HUB_CONNECT_USING_SSL: use HTTPS instead of HTTP for communicating with peripheral servers.
 +
 [NOTE]
 ====
@@ -302,7 +302,7 @@ Do this by copying the RHN-ORG-TRUSTED-SSL-CERT certificate file from each perip
 
 --
 
-.. Restart services to activate any configuration changes you make.
+.. Restart services to activate configuration changes.
 +
 [source, console]
 ----
@@ -331,7 +331,7 @@ Creating a peripheral server follows the normal {product1} installation and setu
 However, instead of configuring the SCC connection, you configure the peripheral server to obtain SCC content from the hub.
 
 
-. Install {product1} on the designated hub system.
+. Install {product1} on the designated peripheral system.
 //
 +
 Follow the steps detailed in the https://{product1_docs}/installation-and-upgrade/installation-and-upgrade-overview.html[{product1} Installation and Upgrade Guide].
@@ -352,13 +352,13 @@ Your main administration user and organization should match those you created on
 Peripheral servers must be registered to the hub server as Salt clients.
 When you register a peripheral server, you must assign it to the appropriate {product1} software channel as its base channel.
 The best way to do this is with activation keys.
-You can create a specific activation key and assign the appropriate channel as the base channel based on the key.
+You can create a specific activation key for assigning the appropriate channel as the base channel.
 
-Register a peripheral server to the hub using one of the https://{product1_docs}/client-configuration/registration-methods.html[Client Registration Methods].
+Register a peripheral server to the hub using one of the https://{product1_docs}/client-configuration/registration-methods.html[{product1} Client Registration Methods].
 
 For example, to register a peripheral with the {product1} Web UI, you can follow these steps:
 
-. In the {product1} Web UI, navigate to __Systems__ > __Bootstrapping__.
+. In the {product1} Web UI of your hub server, navigate to __Systems__ > __Bootstrapping__.
 
 . In the __Host__ field, type the fully qualified domain name (FQDN) of the client to be bootstrapped.
 
@@ -393,7 +393,7 @@ If you check this option, the client is configured to use SSH for its connection
 . Click __Bootstrap__ to begin registration.
 
 
-When the bootstrap process has completed, your client is listed at __Systems__ > __System List__.
+When the bootstrap process has completed, your client is listed in the {product1} Web UI of your hub server at __Systems__ > __System List__.
 The peripheral server can now be managed as a standard Salt client of the hub. 
 
 
@@ -402,62 +402,58 @@ The peripheral server can now be managed as a standard Salt client of the hub.
 === Install Inter-Server Synchronization
 
 To use Inter-Server Synchronization (ISS), you need to install the `inter-server-sync` package on hub and peripheral {product1} servers.
-This is easily accomplished by issuing the following command:
+This is easily accomplished by issuing the following command on each:
 
 [source, console]
 ----
 zypper install inter-server-sync
 ----
 
+
 === Build customer-specific content lifecycle management
 
 As an MSP, you manage the systems lifecycles of many customers.
 Managing the testing and roll out of software packages to your customers can be challenging.
-Moreover, your customers may have each have different software needs, testing requirements, and deployment schedules.
+Moreover, each of your customers may have different software needs, testing requirements, and deployment schedules.
 {product1} provides the flexibility you need to define and manage content lifecycles for your business and your customers.
 
-You begin by creating customer-specific software channels and assigning these to appropriate, managed clients.
-
-// Mark: Can we include some specific steps here ... an example the reader can follow?
+You begin by creating customer-specific software channels and assigning these to the appropriate, managed clients.
 
 
-To learn more, see https://{product1_docs}/administration/content-lifecycle.html[Content Lifecycle Management].
+To learn more, see https://{product1_docs}/administration/content-lifecycle.html[{product1} Content Lifecycle Management].
 
 
 
 === Export and import content
 
-After defining customer-specific channels as part of your content lifecycle management, you can use the `inter-server-sync` command to export these channels from the {product1} hub to a local filesystem directory.
-For example:
+After defining customer-specific channels as part of your content lifecycle management, you need to export them from the hub server and import them into the appropriate peripheral servers.
 
+. Use the `inter-server-sync` command to export these channels on the hub to a local filesystem directory.
++
 [source, console]
 ----
 inter-server-sync export –channel-with-children
 ----
-
++
 [TIP]
 ====
 Get detailed help on the ISS export command with `inter-server-sync export -h`.
 ====
 
 
-// Mark: Where is this directory created?  Let's be walk the reader through a specific example.
+. When the export is complete, transfer the directory and its contents to the peripheral server.
+The simplest way to do this is to use shared storage, such as a common NFS filesystem.
+You can also transfer the directory and its contents over the network, such as with `rsync`.
 
-
-When the export is complete, you need to transfer the directory and its contents to the peripheral server.
-The simplest method is to use shared storage (such as a common NFS filesystem).
-You could also copy the exported channels over the network (such as with `rsync`).
-
-Next, import the content lifecycle management on the peripheral server with:
-
+. With the directory and its contents on the peripheral server, import the channels.
++
 [source, console]
 ----
-inter-server-sync import ...
+inter-server-sync import <path-to-directory>
 ----
-
-// Mark: Can we provide a specific example of the import?
-
-
++
+Be sure to replace `<path-to-directory>` with the actual path.
++
 [TIP]
 ====
 Get detailed help on the ISS import command with `inter-server-sync import -h`.
@@ -469,7 +465,7 @@ Get detailed help on the ISS import command with `inter-server-sync import -h`.
 
 Clients are the end-point systems you want to manage.
 {product1} is compatible with a wide range of client technologies.
-For a full list supported clients and features, see https://{product1_docs}/client-configuration/supported-features.html[Supported Clients and Features].
+For a full list supported clients and features, see https://{product1_docs}/client-configuration/supported-features.html[{product1} Supported Clients and Features].
 
 There are three ways to register clients to a {product1} server:
 
@@ -486,11 +482,11 @@ For bootstrap and command line methods, you must first create an https://{produc
 For all methods, date and time on the client must be synchronized with the {product1} server.
 ====
 
-For details on client configuration, see the https://{product1_docs}/client-configuration/client-config-overview.html[Client Configuration Guide].
+For details on client configuration, see the https://{product1_docs}/client-configuration/client-config-overview.html[{product1} Client Configuration Guide].
 
 
 
-== Centralized management
+//== Centralized management
 
 // Mark: Add some verbiage and link to more documentation here.
 
@@ -558,6 +554,7 @@ For details on client configuration, see the https://{product1_docs}/client-conf
 // * Auto-connect mode: credentials are reused for each server, and any peripheral server you have access to is automatically connected.
 // 
 
+
 == Reporting
 
 Every {product1} peripheral server has its own reporting (PostgreSQL) database, where information is collected for that server and its registered clients.
@@ -573,7 +570,7 @@ You can leverage some of the pre-configured reports or use an external reporting
 Connect to an external reporting tool only through a user account with read-only permissions.
 ====
 
-For more on reporting, see https://{product1_docs}/administration/reports.html[Reports Generation].
+For more on reporting, see https://{product1_docs}/administration/reports.html[{product1} Reports Generation].
 
 // Mark: If we are not going to walk through an example, I suggest we delete the content commented out below:
 
