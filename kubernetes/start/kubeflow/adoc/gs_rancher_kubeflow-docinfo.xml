@@ -3,7 +3,7 @@
 <dm:docmanager xmlns:dm="urn:x-suse:ns:docmanager">
     <dm:bugtracker>
         <dm:url>https://github.com/SUSE/technical-reference-documentation/issues/new</dm:url>
-        <!--  <dm:product>{title}</dm:product> -->
+	<!--  <dm:product>{title}</dm:product> -->
     </dm:bugtracker>
 </dm:docmanager>
 
@@ -35,8 +35,9 @@
 -->
 <productname>{product1}</productname>
 <meta name="platform">{product1_full}</meta>
-<meta name="platform">{product2}</meta>
+<meta name="platform">{product2_full}</meta>
 <meta name="platform">{product3_full}</meta>
+<meta name="platform">{product4_full}</meta>
 
 
 <!-- author metadata
@@ -56,22 +57,45 @@
       <orgname>{author1_orgname}</orgname>
     </affiliation>
   </author>
+  <author>
+    <personname>
+      <firstname>{author2_firstname}</firstname>
+      <surname>{author2_surname}</surname>
+    </personname>
+    <affiliation>
+      <jobtitle>{author2_jobtitle}</jobtitle>
+      <orgname>{author2_orgname}</orgname>
+    </affiliation>
+  </author>
+  <author>
+    <personname>
+      <firstname>{author3_firstname}</firstname>
+      <surname>{author3_surname}</surname>
+    </personname>
+    <affiliation>
+      <jobtitle>{author3_jobtitle}</jobtitle>
+      <orgname>{author3_orgname}</orgname>
+    </affiliation>
+  </author>
 </authorgroup>
 
-
 <!-- logo images
-     Duplicate mediaobject tag group and
-     reference additional logos as needed.
-     Place logo files under media directory tree.
+     The default logo is the official SUSE chameleon (positive for light background).
+     To display multiple logos:
+       1. Create a logo lock-up as a single SVG file (follow SUSE brand guidelines and obtain permission from owner of any additional logos).
+       2. Place the logo file in the _media/src/svg_ directory.
+       3. Update `fileref` below with the new file name.
+     NOTE: Scaling can be tricky.
+           Adjust `width` in the "fo" role for non-HTML renderings.
+           Adjust `width` in the "html" role for HTML renderings.
 -->
-
 <cover role="logos">
   <mediaobject>
     <imageobject role="fo">
-      <imagedata fileref="suse.svg" width="5em" align="center" valign="bottom"/>
+      <imagedata fileref="suse.svg" width="10em"/>
     </imageobject>
     <imageobject role="html">
-      <imagedata fileref="suse.svg" width="152px" align="center" valign="bottom"/>
+      <imagedata fileref="suse.svg" width="30em"/>
     </imageobject>
   </mediaobject>
 </cover>
@@ -81,8 +105,7 @@
 -->
 <abstract role="executivesummary">
   <title>Summary</title>
-  <para>This document provides an introduction to the analytics edge ecosystem with Rancher by SUSE through the deployment of a machine learning model and Web-based user interface for generating and visualizing stock market predictions.</para>
-  <para>This project is part of the Google Summer of Code, a global online mentoring program focused on introducing new contributors to open source software development.</para>
+  <para>{executive_summary}</para>
 </abstract>
 
 
@@ -93,3 +116,4 @@
   <title>Disclaimer</title>
   <para>{disclaimer}</para>
 </abstract>
+
